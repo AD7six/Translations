@@ -15,6 +15,7 @@ class ExtractBaseTask extends ExtractTask {
  */
 	public function execute() {
 		$this->_getPaths();
+		$path = $this->_paths[0];
 
 		$this->params['extract-core'] = 'no';
 
@@ -28,14 +29,19 @@ class ExtractBaseTask extends ExtractTask {
 		}
 
 		if (!isset($this->params['output'] )) {
-			$this->params['output'] = $this->_paths[0] . 'Locale' . DS;
+			$this->params['output'] = $path . 'Locale' . DS;
 		}
 
 		$this->params['merge'] = 'no';
 
 		$this->params['overwrite'] = true;
 
-		$this->params['paths'] = $this->_paths[0];
+		// set plugin param if a plugin path is given and the default domain is set
+		if (preg_match('/Plugin\/(?P<plugin>.+)\//', $path, $matches) && isset($this->_defaultDomain)) {
+			$this->params['plugin'] = $matches['plugin'];
+		} else {
+			$this->params['paths'] = $path;
+		}
 
 		parent::execute();
 	}
