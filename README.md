@@ -29,6 +29,10 @@ Load the db schema:
 
 	mysql mydb < app/Plugin/Translations/Config/schema.sql
 
+OR for allowing longer translation strings:
+
+	mysql mydb < app/Plugin/Translations/Config/schema_long.sql
+
 Then add the following to `app/Config/bootstrap.php` file
 
 	CakePlugin::load('Translations', array('bootstrap' => true));
