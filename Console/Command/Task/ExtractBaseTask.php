@@ -81,17 +81,18 @@ class ExtractBaseTask extends ExtractTask {
  * If the extract task finds a default-domain translation - redefine it as "whatever".
  * This is important because the filename of a pot file is used as the domain on import.
  *
+ * @param string $category
  * @param string $domain
  * @param string $header
  * @param string $sentence
  * @return void
  */
-	protected function _store($domain, $header, $sentence) {
+	protected function _store($category, $domain, $header, $sentence) {
 		if ($domain === 'default') {
 			$domain = $this->_defaultDomain;
 		}
 
-		parent::_store($domain, $header, $sentence);
+		parent::_store($category, $domain, $header, $sentence);
 	}
 
 /**
@@ -107,20 +108,27 @@ class ExtractBaseTask extends ExtractTask {
 	protected function _writeFiles() {
 		$this->hr();
 
-		foreach ($this->_storage as $domain => $sentences) {
-			$output = $this->_writeHeader();
-			foreach ($sentences as $sentence => $header) {
-				$output .= $header . $sentence;
+		foreach ($this->_storage as $category => $domains) {
+			foreach ($domains as $domain => $sentences) {
+				$output = $this->_writeHeader();
+				foreach ($sentences as $sentence => $header) {
+					$output .= $header . $sentence;
+				}
+
+
+				$filename = $domain . '.pot';
+				if ($category === 'LC_MESSAGES') {
+					new Folder($this->_output, true);
+					$File = new File($this->_output . $filename);
+				} else {
+					new Folder($this->_output . $category, true);
+					$File = new File($this->_output . $category . DS . $filename);
+				}
+
+				$this->out('Writing ' . $File->path);
+				$File->write($output);
+				$File->close();
 			}
-
-			new Folder($this->_output, true);
-
-			$filename = $domain . '.pot';
-			$File = new File($this->_output . $filename);
-
-			$this->out('Writing ' . $File->path);
-			$File->write($output);
-			$File->close();
 		}
 	}
 }
