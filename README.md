@@ -14,6 +14,10 @@ See the docs folder for more detailed information.
  * Export to multiple file formats
  * Import from multiple file formats
 
+##Requirements
+
+ * Cakephp 2.4+
+
 ##Installation
 
 Install like any other CakePHP plugin, e.g.:
@@ -33,9 +37,9 @@ Then add the following to `app/Config/bootstrap.php` file
 
 	CakePlugin::load('Translations', array('bootstrap' => true));
 
-To have this plugin take over all translation function from cake - you MUST use CakePHP 2.3+
-and you MUST include `Config/override_i18n.php` BEFORE loading CakePHP. To do this add the
-following code to the beginning of each of these files:
+To have this plugin take over all translation function from cake - you MUST include
+`Config/override_i18n.php` BEFORE loading CakePHP. To do this add the following code to the
+beginning of each of these files:
 
     include_once dirname(__DIR__) . '/Plugin/Translations/Config/override_i18n.php';
 
