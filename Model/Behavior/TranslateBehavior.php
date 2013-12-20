@@ -96,7 +96,7 @@ class TranslateBehavior extends ModelBehavior {
  * @param boolean $primary Did the find originate on $Model.
  * @return array Modified results
  */
-	public function afterFind(Model $Model, $results, $primary) {
+	public function afterFind(Model $Model, $results, $primary = false) {
 		if (empty($this->settings[$Model->alias]['fields']) || empty($results[0][$Model->alias][$Model->primaryKey])) {
 			return $results;
 		};
@@ -156,7 +156,7 @@ class TranslateBehavior extends ModelBehavior {
  * @param Model $Model Model the callback is called on
  * @param boolean $created Whether or not the save created a record.
  * @return void */
-	public function afterSave(Model $Model, $created) {
+	public function afterSave(Model $Model, $created, $options = array()) {
 		if ($this->_pendingTranslations) {
 			foreach ($this->_pendingTranslations as $locale => $translations) {
 				$params = array(
