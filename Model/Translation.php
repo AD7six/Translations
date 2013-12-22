@@ -26,7 +26,16 @@ class Translation extends TranslationsAppModel {
 			'notempty' => array(
 				'rule' => array('notempty'),
 			),
+		),
+		'value' => array(
+			'notempty' => array(
+				'rule' => array('validateNotEmptyValue'),
+			),
+			'notsame' => array(
+				'rule' => array('validateInheritance'),
+			),
 		)
+
 	);
 
 /**
@@ -185,23 +194,36 @@ class Translation extends TranslationsAppModel {
 	}
 
 /**
- * beforeValidate
+ * validateNotEmptyValue
  *
- * Maintain inheritance, don't create duplicate or empty translations
+ * Maintain inheritance, don't create empty translations. Allow updating existing
+ * translations to an empty value though
  *
- * @param array $options
- * @return boolean
+ * @return void
  */
-	public function beforeValidate($options = array()) {
-		if (!$this->id) {
-			if (
-				$this->data[$this->alias]['value'] === '' &&
-				$this->data[$this->alias]['locale'] !== Configure::read('Config.defaultLanguage')
-			) {
-				return false;
-			}
+	public function validateNotEmptyValue() {
+		if ($this->id) {
+			return true;
 		}
 
+		if (
+			$this->data[$this->alias]['value'] === '' &&
+			$this->data[$this->alias]['locale'] !== Configure::read('Config.defaultLanguage')
+		) {
+			return false;
+		}
+
+		return true;
+	}
+
+/**
+ * validateInheritance
+ *
+ * Maintain inheritance, don't create duplicate translations
+ *
+ * @return boolean
+ */
+	public function validateInheritance() {
 		if (
 			!empty($this->data[$this->alias]['locale']) &&
 			!empty($this->data[$this->alias]['key']) &&
@@ -221,8 +243,7 @@ class Translation extends TranslationsAppModel {
 				}
 			}
 		}
-
-		return parent::beforeValidate($options);
+		return true;
 	}
 
 /**
