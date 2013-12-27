@@ -88,7 +88,14 @@ class ImportShell extends AppShell {
 			$this->_purge($existing, $ids, $conditions);
 		}
 
+		$preventNewTranslations = $this->_settings['locale'] !== Configure::read('Config.language');
+
 		foreach ($return['translations'] as $translation) {
+			if ($preventNewTranslations && !Translation::hasTranslation($translation['key'])) {
+				$this->out(sprintf('Skipping "%s"', $translation['key']));
+				continue;
+			}
+
 			if (empty($this->_settings['overwrite'])) {
 				if (array_key_exists($translation['key'], $existing)) {
 					$this->out(sprintf('Skipping "%s"', $translation['key']));
