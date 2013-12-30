@@ -92,13 +92,13 @@ class ImportShell extends AppShell {
 
 		foreach ($return['translations'] as $translation) {
 			if ($preventNewTranslations && !Translation::hasTranslation($translation['key'])) {
-				$this->out(sprintf('Skipping "%s"', $translation['key']));
+				$this->out(sprintf('<warning>Skipping undefined translation:</warning> "%s"', $translation['key']));
 				continue;
 			}
 
 			if (empty($this->_settings['overwrite'])) {
 				if (array_key_exists($translation['key'], $existing)) {
-					$this->out(sprintf('Skipping "%s"', $translation['key']));
+					$this->out(sprintf('<info>Skipping existing translation:</info> "%s"', $translation['key']));
 					continue;
 				}
 			}
