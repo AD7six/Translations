@@ -460,17 +460,18 @@ class Translation extends TranslationsAppModel {
  * @return mixed boolean success writing a file - or the string representation
  */
 	public static function export($file, $settings = array()) {
-		static::config();
-		static::_loadModel();
-
 		$settings = $settings + array(
 			'locale' => Configure::read('Config.language'),
 			'nested' => false,
 			'addDefaults' => true,
 			'domain' => 'default',
 			'category' => 'LC_MESSAGES',
-			'format' => null
+			'format' => null,
+			'details' => true
 		);
+
+		static::config();
+		static::_loadModel();
 
 		if ($settings['format']) {
 			$format = $settings['format'];
@@ -480,7 +481,7 @@ class Translation extends TranslationsAppModel {
 				$format = $info['extension'];
 			}
 		}
-		$settings['translations'] = static::$_model->_forLocaleDetailed($settings);
+		$settings['translations'] = static::$_model->_export($settings);
 
 		$parserClass = ucfirst($format) . 'Parser';
 		App::uses($parserClass, 'Translations.Parser');
@@ -490,10 +491,12 @@ class Translation extends TranslationsAppModel {
 			'locale' => true,
 			'domain' => true,
 			'category' => true,
-			'translations' => true
+			'translations' => true,
+			'details' => true
 		));
 		$return['count'] = count($settings['translations']);
 		$return['string'] = $parserClass::generate($settings);
+		$return['details'] = $settings['details'];
 
 		$return['success'] = true;
 		if ($file && !file_put_contents($file, $return['string'])) {
@@ -1063,18 +1066,18 @@ class Translation extends TranslationsAppModel {
 	}
 
 /**
- * _forLocale
+ * _export
  *
  * @param mixed $settings
  * @return array
  */
-	protected function _forLocaleDetailed($settings) {
+	protected function _export($settings) {
 		if ($settings['addDefaults']) {
 			$settings['addDefaults'] = false;
 			$locales = $this->_fallbackLocales($settings['locale']);
 			$return = array();
 			foreach ($locales as $locale) {
-				$return += $this->_forLocaleDetailed(compact('locale') + $settings);
+				$return += $this->_export(compact('locale') + $settings);
 			}
 			return $return;
 		}
@@ -1102,7 +1105,11 @@ class Translation extends TranslationsAppModel {
 			$key = $row['key'];
 			$plural = $row['plural_case'];
 			$row['references'] = json_decode($row['references']);
-			$row = array_intersect_key($row, $keys);
+			if ($settings['details']) {
+				$row = array_intersect_key($row, $keys);
+			} else {
+				$row = $row['value'];
+			}
 			if (is_null($plural)) {
 				$data[$key] = $row;
 			} else {
@@ -1110,25 +1117,7 @@ class Translation extends TranslationsAppModel {
 			}
 		}
 
-		if (empty($settings['section'])) {
-			ksort($data);
-		}
-
-		if ($settings['nested'] && $data) {
-			$data = $this->_expand($data);
-			if ($settings['section']) {
-				$keys = explode('.', $settings['section']);
-
-				while ($keys) {
-					$key = array_shift($keys);
-					if (!array_key_exists($key, $data)) {
-						$data = array();
-						break;
-					}
-					$data = $data[$key];
-				}
-			}
-		}
+		ksort($data);
 
 		return $data;
 	}
