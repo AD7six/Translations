@@ -1157,7 +1157,7 @@ class Translation extends TranslationsAppModel {
  * @return int
  */
 	protected static function _pluralCase($n, $locale = null) {
-		$rule = static::_pluralRule($locale);
+		$rule = static::pluralRule($locale);
 
 		return PluralRule::check($rule, $n);
 	}
@@ -1176,7 +1176,7 @@ class Translation extends TranslationsAppModel {
  * @return int
  */
 	protected static function _pluralCases($locale = null) {
-		$rule = static::_pluralRule($locale);
+		$rule = static::pluralRule($locale);
 		return (int)substr($rule, 9, 1);
 	}
 
@@ -1187,7 +1187,7 @@ class Translation extends TranslationsAppModel {
  *
  * @param string  locale
  */
-	protected static function _pluralRule($locale = null) {
+	public static function pluralRule($locale = null) {
 		$locale = substr($locale, 0, 2);
 
 		if (array_key_exists($locale, static::$_pluralRules)) {
