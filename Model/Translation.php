@@ -460,6 +460,9 @@ class Translation extends TranslationsAppModel {
  * @return mixed boolean success writing a file - or the string representation
  */
 	public static function export($file, $settings = array()) {
+		static::config();
+		static::_loadModel();
+
 		$settings = $settings + array(
 			'locale' => Configure::read('Config.language'),
 			'nested' => false,
@@ -477,7 +480,7 @@ class Translation extends TranslationsAppModel {
 				$format = $info['extension'];
 			}
 		}
-		$settings['translations'] = static::forLocale($settings['locale'], $settings);
+		$settings['translations'] = static::$_model->_forLocaleDetailed($settings);
 
 		$parserClass = ucfirst($format) . 'Parser';
 		App::uses($parserClass, 'Translations.Parser');
@@ -1037,6 +1040,77 @@ class Translation extends TranslationsAppModel {
 		}
 
 		if (!$settings['section']) {
+			ksort($data);
+		}
+
+		if ($settings['nested'] && $data) {
+			$data = $this->_expand($data);
+			if ($settings['section']) {
+				$keys = explode('.', $settings['section']);
+
+				while ($keys) {
+					$key = array_shift($keys);
+					if (!array_key_exists($key, $data)) {
+						$data = array();
+						break;
+					}
+					$data = $data[$key];
+				}
+			}
+		}
+
+		return $data;
+	}
+
+/**
+ * _forLocale
+ *
+ * @param mixed $settings
+ * @return array
+ */
+	protected function _forLocaleDetailed($settings) {
+		if ($settings['addDefaults']) {
+			$settings['addDefaults'] = false;
+			$locales = $this->_fallbackLocales($settings['locale']);
+			$return = array();
+			foreach ($locales as $locale) {
+				$return += $this->_forLocaleDetailed(compact('locale') + $settings);
+			}
+			return $return;
+		}
+
+		$conditions = array(
+			'locale' => $settings['locale'],
+			'domain' => $settings['domain'],
+			'category' => $settings['category']
+		);
+		if (!empty($settings['section'])) {
+			$conditions['key LIKE'] = $settings['section'] . '%';
+		}
+
+		$all = $this->find('all', array(
+			'conditions' => $conditions,
+			'order' => array('key' => 'ASC')
+		));
+
+		$data = array();
+		$keys = array_flip(array(
+			'value', 'comments', 'references', 'history'
+		));
+		foreach ($all as $row) {
+			$row = current($row);
+			$key = $row['key'];
+			$plural = $row['plural_case'];
+			$row['references'] = json_decode($row['references']);
+			$row = array_intersect_key($row, $keys);
+			if (is_null($plural)) {
+				$data[$key] = $row;
+			} else {
+				$data[$key][$plural_case] = $row;
+			}
+		}
+
+		if (empty($settings['section'])) {
 			ksort($data);
 		}
 
