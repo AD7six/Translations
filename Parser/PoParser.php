@@ -206,4 +206,71 @@ class PoParser extends Parser {
 
 		return $return;
 	}
+
+/**
+ * generate
+ *
+ * @param array $array
+ * @return string
+ */
+	public static function generate($array = array()) {
+		$paths[] = realpath(APP) . DS;
+		$paths[] = realpath(ROOT) . DS;
+
+		extract($array);
+
+		$return = static::_header($array);
+
+		foreach ($translations as $msgid => $details) {
+			$plural = false; // TODO $details['msgid_plural'];
+			$occurrences = implode("\n#: ", $details['references']);
+			$header = '#: ' . str_replace(DS, '/', str_replace($paths, '', $occurrences)) . "\n";
+
+			if ($plural === false) {
+				$sentence = "msgid \"{$msgid}\"\n";
+				$sentence .= "msgstr \"\"\n\n";
+			} else {
+				$sentence = "msgid \"{$msgid}\"\n";
+				$sentence .= "msgid_plural \"{$plural}\"\n";
+				$sentence .= "msgstr[0] \"\"\n";
+				$sentence .= "msgstr[1] \"\"\n\n";
+			}
+
+			$return .= $header . $sentence;
+		}
+
+		return $return;
+	}
+
+/**
+ * Return a po/pot file header
+ *
+ * @param array $array
+ * @return string
+ */
+	protected static function _header($array = array()) {
+		$domain = $array['domain'];
+		$pluralRule = static::_pluralRule($array['locale']);
+
+		$output = "# LANGUAGE translation for domain '$domain'\n";
+		$output .= "# Copyright YEAR NAME <EMAIL@ADDRESS>\n";
+		$output .= "#\n";
+		//$output .= "#, fuzzy\n";
+		$output .= "msgid \"\"\n";
+		$output .= "msgstr \"\"\n";
+		$output .= "\"Project-Id-Version: PROJECT VERSION\\n\"\n";
+		$output .= "\"POT-Creation-Date: " . date("Y-m-d H:iO") . "\\n\"\n";
+		$output .= "\"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\\n\"\n";
+		$output .= "\"Last-Translator: NAME <EMAIL@ADDRESS>\\n\"\n";
+		$output .= "\"Language-Team: LANGUAGE <EMAIL@ADDRESS>\\n\"\n";
+		$output .= "\"MIME-Version: 1.0\\n\"\n";
+		$output .= "\"Content-Type: text/plain; charset=utf-8\\n\"\n";
+		$output .= "\"Content-Transfer-Encoding: 8bit\\n\"\n";
+		$output .= "\"Plural-Forms: $pluralRule\\n\"\n\n";
+		return $output;
+	}
+
+	protected static function _pluralRule($locale) {
+		return Translation::pluralRule($locale);
+	}
 }
