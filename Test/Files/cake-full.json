@@ -1,0 +1,903 @@
+{
+    "locale": "en",
+    "domain": "cake",
+    "category": "LC_MESSAGES",
+    "compact": false,
+    "translations": {
+        " of ": {
+            "value": " of ",
+            "comments": null,
+            "references": [
+                "View\/Helper\/PaginatorHelper.php:581"
+            ],
+            "history": null
+        },
+        "%.2f GB": {
+            "value": "%.2f GB",
+            "comments": null,
+            "references": [
+                "Utility\/CakeNumber.php:98"
+            ],
+            "history": null
+        },
+        "%.2f MB": {
+            "value": "%.2f MB",
+            "comments": null,
+            "references": [
+                "Utility\/CakeNumber.php:96"
+            ],
+            "history": null
+        },
+        "%.2f TB": {
+            "value": "%.2f TB",
+            "comments": null,
+            "references": [
+                "Utility\/CakeNumber.php:100"
+            ],
+            "history": null
+        },
+        "%d Byte": {
+            "value": "%d Byte",
+            "comments": null,
+            "references": [
+                "Utility\/CakeNumber.php:92"
+            ],
+            "history": null
+        },
+        "%d Bytes": {
+            "1": {
+                "value": "%d Bytes",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeNumber.php:92"
+                ],
+                "history": null
+            },
+            "0": {
+                "value": "%d Bytes",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeNumber.php:92"
+                ],
+                "history": null
+            }
+        },
+        "%d KB": {
+            "value": "%d KB",
+            "comments": null,
+            "references": [
+                "Utility\/CakeNumber.php:94"
+            ],
+            "history": null
+        },
+        "%d day": {
+            "value": "%d day",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:825",
+                "Utility\/CakeTime.php:828",
+                "Utility\/CakeTime.php:831",
+                "Utility\/CakeTime.php:834"
+            ],
+            "history": null
+        },
+        "%d days": {
+            "1": {
+                "value": "%d days",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831",
+                    "Utility\/CakeTime.php:834"
+                ],
+                "history": null
+            },
+            "0": {
+                "value": "%d days",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831",
+                    "Utility\/CakeTime.php:834"
+                ],
+                "history": null
+            }
+        },
+        "%d hour": {
+            "value": "%d hour",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:825",
+                "Utility\/CakeTime.php:828",
+                "Utility\/CakeTime.php:831",
+                "Utility\/CakeTime.php:834",
+                "Utility\/CakeTime.php:837"
+            ],
+            "history": null
+        },
+        "%d hours": [
+            {
+                "value": "%d hours",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831",
+                    "Utility\/CakeTime.php:834",
+                    "Utility\/CakeTime.php:837"
+                ],
+                "history": null
+            },
+            {
+                "value": "%d hours",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831",
+                    "Utility\/CakeTime.php:834",
+                    "Utility\/CakeTime.php:837"
+                ],
+                "history": null
+            }
+        ],
+        "%d minute": {
+            "value": "%d minute",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:825",
+                "Utility\/CakeTime.php:828",
+                "Utility\/CakeTime.php:831",
+                "Utility\/CakeTime.php:834",
+                "Utility\/CakeTime.php:837",
+                "Utility\/CakeTime.php:840"
+            ],
+            "history": null
+        },
+        "%d minutes": [
+            {
+                "value": "%d minutes",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831",
+                    "Utility\/CakeTime.php:834",
+                    "Utility\/CakeTime.php:837",
+                    "Utility\/CakeTime.php:840"
+                ],
+                "history": null
+            },
+            {
+                "value": "%d minutes",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831",
+                    "Utility\/CakeTime.php:834",
+                    "Utility\/CakeTime.php:837",
+                    "Utility\/CakeTime.php:840"
+                ],
+                "history": null
+            }
+        ],
+        "%d month": {
+            "value": "%d month",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:825",
+                "Utility\/CakeTime.php:828"
+            ],
+            "history": null
+        },
+        "%d months": {
+            "1": {
+                "value": "%d months",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828"
+                ],
+                "history": null
+            },
+            "0": {
+                "value": "%d months",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828"
+                ],
+                "history": null
+            }
+        },
+        "%d second": {
+            "value": "%d second",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:825",
+                "Utility\/CakeTime.php:828",
+                "Utility\/CakeTime.php:831",
+                "Utility\/CakeTime.php:834",
+                "Utility\/CakeTime.php:837",
+                "Utility\/CakeTime.php:840",
+                "Utility\/CakeTime.php:843"
+            ],
+            "history": null
+        },
+        "%d seconds": [
+            {
+                "value": "%d seconds",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831",
+                    "Utility\/CakeTime.php:834",
+                    "Utility\/CakeTime.php:837",
+                    "Utility\/CakeTime.php:840",
+                    "Utility\/CakeTime.php:843"
+                ],
+                "history": null
+            },
+            {
+                "value": "%d seconds",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831",
+                    "Utility\/CakeTime.php:834",
+                    "Utility\/CakeTime.php:837",
+                    "Utility\/CakeTime.php:840",
+                    "Utility\/CakeTime.php:843"
+                ],
+                "history": null
+            }
+        ],
+        "%d week": {
+            "value": "%d week",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:825",
+                "Utility\/CakeTime.php:828",
+                "Utility\/CakeTime.php:831"
+            ],
+            "history": null
+        },
+        "%d weeks": [
+            {
+                "value": "%d weeks",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831"
+                ],
+                "history": null
+            },
+            {
+                "value": "%d weeks",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825",
+                    "Utility\/CakeTime.php:828",
+                    "Utility\/CakeTime.php:831"
+                ],
+                "history": null
+            }
+        ],
+        "%d year": {
+            "value": "%d year",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:825"
+            ],
+            "history": null
+        },
+        "%d years": [
+            {
+                "value": "%d years",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825"
+                ],
+                "history": null
+            },
+            {
+                "value": "%d years",
+                "comments": null,
+                "references": [
+                    "Utility\/CakeTime.php:825"
+                ],
+                "history": null
+            }
+        ],
+        "%s ago": {
+            "value": "%s ago",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:847"
+            ],
+            "history": null
+        },
+        "Actions": {
+            "value": "Actions",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/form.ctp:27",
+                "View\/Scaffolds\/index.ctp:26;78",
+                "View\/Scaffolds\/view.ctp:45"
+            ],
+            "history": null
+        },
+        "An Internal Error Has Occurred.": {
+            "value": "An Internal Error Has Occurred.",
+            "comments": null,
+            "references": [
+                "View\/Errors\/error500.ctp:22",
+                "Error\/ExceptionRenderer.php:227"
+            ],
+            "history": null
+        },
+        "April": {
+            "value": "April",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2575"
+            ],
+            "history": null
+        },
+        "Are you sure you want to delete": {
+            "value": "Are you sure you want to delete",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/index.ctp:55",
+                "View\/Scaffolds\/view.ctp:49;133"
+            ],
+            "history": null
+        },
+        "Are you sure you want to delete # %s?": {
+            "value": "Are you sure you want to delete # %s?",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/form.ctp:34"
+            ],
+            "history": null
+        },
+        "August": {
+            "value": "August",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2579"
+            ],
+            "history": null
+        },
+        "December": {
+            "value": "December",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2583"
+            ],
+            "history": null
+        },
+        "Delete": {
+            "value": "Delete",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/form.ctp:31",
+                "View\/Scaffolds\/index.ctp:52",
+                "View\/Scaffolds\/view.ctp:133"
+            ],
+            "history": null
+        },
+        "Delete %s": {
+            "value": "Delete %s",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/view.ctp:49"
+            ],
+            "history": null
+        },
+        "Edit": {
+            "value": "Edit",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/index.ctp:50",
+                "View\/Scaffolds\/view.ctp:132"
+            ],
+            "history": null
+        },
+        "Edit %s": {
+            "value": "Edit %s",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:861",
+                "View\/Scaffolds\/view.ctp:48;85"
+            ],
+            "history": null
+        },
+        "Error": {
+            "value": "Error",
+            "comments": null,
+            "references": [
+                "View\/Errors\/error400.ctp:21",
+                "View\/Errors\/error500.ctp:21"
+            ],
+            "history": null
+        },
+        "Error in field %s": {
+            "value": "Error in field %s",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:825",
+                "Utility\/CakeTime.php:828",
+                "Utility\/CakeTime.php:831",
+                "Utility\/CakeTime.php:834",
+                "Utility\/CakeTime.php:837",
+                "Utility\/CakeTime.php:840",
+                "Utility\/CakeTime.php:843",
+                "View\/Helper\/FormHelper.php:676"
+            ],
+            "history": null
+        },
+        "February": {
+            "value": "February",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2573"
+            ],
+            "history": null
+        },
+        "Friday": {
+            "value": "Friday",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:399"
+            ],
+            "history": null
+        },
+        "Invalid %s": {
+            "value": "Invalid %s",
+            "comments": null,
+            "references": [
+                "Controller\/Scaffold.php:167;234;305"
+            ],
+            "history": null
+        },
+        "January": {
+            "value": "January",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2572"
+            ],
+            "history": null
+        },
+        "July": {
+            "value": "July",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2578"
+            ],
+            "history": null
+        },
+        "June": {
+            "value": "June",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2577"
+            ],
+            "history": null
+        },
+        "List": {
+            "value": "List",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/form.ctp:37"
+            ],
+            "history": null
+        },
+        "List %s": {
+            "value": "List %s",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/form.ctp:43",
+                "View\/Scaffolds\/index.ctp:86",
+                "View\/Scaffolds\/view.ctp:50;57"
+            ],
+            "history": null
+        },
+        "March": {
+            "value": "March",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2574"
+            ],
+            "history": null
+        },
+        "May": {
+            "value": "May",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2576"
+            ],
+            "history": null
+        },
+        "Monday": {
+            "value": "Monday",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:395"
+            ],
+            "history": null
+        },
+        "New %s": {
+            "value": "New %s",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:855",
+                "View\/Scaffolds\/form.ctp:44",
+                "View\/Scaffolds\/index.ctp:80;87",
+                "View\/Scaffolds\/view.ctp:51;58;142"
+            ],
+            "history": null
+        },
+        "Not Found": {
+            "value": "Not Found",
+            "comments": null,
+            "references": [
+                "Error\/ExceptionRenderer.php:205"
+            ],
+            "history": null
+        },
+        "November": {
+            "value": "November",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2582"
+            ],
+            "history": null
+        },
+        "October": {
+            "value": "October",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2581"
+            ],
+            "history": null
+        },
+        "On %s %s": {
+            "value": "On %s %s",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:406"
+            ],
+            "history": null
+        },
+        "Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}": {
+            "value": "Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/index.ctp:66"
+            ],
+            "history": null
+        },
+        "Please correct errors below.": {
+            "value": "Please correct errors below.",
+            "comments": null,
+            "references": [
+                "Controller\/Scaffold.php:256"
+            ],
+            "history": null
+        },
+        "Related %s": {
+            "value": "Related %s",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/view.ctp:70;105"
+            ],
+            "history": null
+        },
+        "Saturday": {
+            "value": "Saturday",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:400"
+            ],
+            "history": null
+        },
+        "Scaffold :: ": {
+            "value": "Scaffold :: ",
+            "comments": null,
+            "references": [
+                "Controller\/Scaffold.php:128"
+            ],
+            "history": null
+        },
+        "September": {
+            "value": "September",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:2580"
+            ],
+            "history": null
+        },
+        "Submit": {
+            "value": "Submit",
+            "comments": null,
+            "references": [
+                "View\/Helper\/FormHelper.php:1682",
+                "View\/Scaffolds\/form.ctp:23"
+            ],
+            "history": null
+        },
+        "Sunday": {
+            "value": "Sunday",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:394"
+            ],
+            "history": null
+        },
+        "The \"%s\" adapter, does not have a dump() method.": {
+            "value": "The \"%s\" adapter, does not have a dump() method.",
+            "comments": null,
+            "references": [
+                "Core\/Configure.php:325"
+            ],
+            "history": null
+        },
+        "The %1$s has been %2$s": {
+            "value": "The %1$s has been %2$s",
+            "comments": null,
+            "references": [
+                "Controller\/Scaffold.php:245"
+            ],
+            "history": null
+        },
+        "The %1$s with id: %2$s has been deleted.": {
+            "value": "The %1$s with id: %2$s has been deleted.",
+            "comments": null,
+            "references": [
+                "Controller\/Scaffold.php:308"
+            ],
+            "history": null
+        },
+        "The requested address %s was not found on this server.": {
+            "value": "The requested address %s was not found on this server.",
+            "comments": null,
+            "references": [
+                "View\/Errors\/error400.ctp:23"
+            ],
+            "history": null
+        },
+        "The requested file was not found": {
+            "value": "The requested file was not found",
+            "comments": null,
+            "references": [
+                "Network\/CakeResponse.php:1217"
+            ],
+            "history": null
+        },
+        "There is no \"%s\" adapter.": {
+            "value": "There is no \"%s\" adapter.",
+            "comments": null,
+            "references": [
+                "Core\/Configure.php:322"
+            ],
+            "history": null
+        },
+        "There was an error deleting the %1$s with id: %2$s": {
+            "value": "There was an error deleting the %1$s with id: %2$s",
+            "comments": null,
+            "references": [
+                "Controller\/Scaffold.php:311"
+            ],
+            "history": null
+        },
+        "Thursday": {
+            "value": "Thursday",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:398"
+            ],
+            "history": null
+        },
+        "Today, %s": {
+            "value": "Today, %s",
+            "comments": null,
+            "references": [
+                "Utility\/CakeNumber.php:92",
+                "Utility\/CakeTime.php:383"
+            ],
+            "history": null
+        },
+        "Tomorrow, %s": {
+            "value": "Tomorrow, %s",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:389"
+            ],
+            "history": null
+        },
+        "Tuesday": {
+            "value": "Tuesday",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:396"
+            ],
+            "history": null
+        },
+        "View": {
+            "value": "View",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/index.ctp:49",
+                "View\/Scaffolds\/view.ctp:131"
+            ],
+            "history": null
+        },
+        "View %s": {
+            "value": "View %s",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/view.ctp:20"
+            ],
+            "history": null
+        },
+        "Wednesday": {
+            "value": "Wednesday",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:397"
+            ],
+            "history": null
+        },
+        "Yesterday, %s": {
+            "value": "Yesterday, %s",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:386"
+            ],
+            "history": null
+        },
+        "You are not authorized to access that location.": {
+            "value": "You are not authorized to access that location.",
+            "comments": null,
+            "references": [
+                "Controller\/Component\/AuthComponent.php:366"
+            ],
+            "history": null
+        },
+        "abday": {
+            "value": "abday",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:148"
+            ],
+            "history": null
+        },
+        "abmon": {
+            "value": "abmon",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:182"
+            ],
+            "history": null
+        },
+        "am_pm": {
+            "value": "am_pm",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:199"
+            ],
+            "history": null
+        },
+        "d_fmt": {
+            "value": "d_fmt",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:220"
+            ],
+            "history": null
+        },
+        "d_t_fmt": {
+            "value": "d_t_fmt",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:160"
+            ],
+            "history": null
+        },
+        "day": {
+            "value": "day",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:154"
+            ],
+            "history": null
+        },
+        "days": {
+            "value": "days",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:866;888"
+            ],
+            "history": null
+        },
+        "just now": {
+            "value": "just now",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:799"
+            ],
+            "history": null
+        },
+        "mon": {
+            "value": "mon",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:188"
+            ],
+            "history": null
+        },
+        "next": {
+            "value": "next",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/index.ctp:73"
+            ],
+            "history": null
+        },
+        "on %s": {
+            "value": "on %s",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:803"
+            ],
+            "history": null
+        },
+        "previous": {
+            "value": "previous",
+            "comments": null,
+            "references": [
+                "View\/Scaffolds\/index.ctp:71"
+            ],
+            "history": null
+        },
+        "saved": {
+            "value": "saved",
+            "comments": null,
+            "references": [
+                "Controller\/Scaffold.php:225"
+            ],
+            "history": null
+        },
+        "t_fmt": {
+            "value": "t_fmt",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:226"
+            ],
+            "history": null
+        },
+        "t_fmt_ampm": {
+            "value": "t_fmt_ampm",
+            "comments": null,
+            "references": [
+                "Utility\/CakeTime.php:206"
+            ],
+            "history": null
+        },
+        "updated": {
+            "value": "updated",
+            "comments": null,
+            "references": [
+                "Controller\/Scaffold.php:222"
+            ],
+            "history": null
+        }
+    }
+}
