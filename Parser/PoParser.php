@@ -219,24 +219,10 @@ class PoParser extends Parser {
 
 		extract($array);
 
-		$return = static::_header($array);
+		$return = static::_writeHeader($array);
 
 		foreach ($translations as $msgid => $details) {
-			$plural = false; // TODO $details['msgid_plural'];
-			$occurrences = implode("\n#: ", $details['references']);
-			$header = '#: ' . str_replace(DS, '/', str_replace($paths, '', $occurrences)) . "\n";
-
-			if ($plural === false) {
-				$sentence = "msgid \"{$msgid}\"\n";
-				$sentence .= "msgstr \"\"\n\n";
-			} else {
-				$sentence = "msgid \"{$msgid}\"\n";
-				$sentence .= "msgid_plural \"{$plural}\"\n";
-				$sentence .= "msgstr[0] \"\"\n";
-				$sentence .= "msgstr[1] \"\"\n\n";
-			}
-
-			$return .= $header . $sentence;
+			$return .= static::_writeTranslation($msgid, $details, $paths);
 		}
 
 		return $return;
@@ -248,7 +234,7 @@ class PoParser extends Parser {
  * @param array $array
  * @return string
  */
-	protected static function _header($array = array()) {
+	protected static function _writeHeader($array = array()) {
 		$domain = $array['domain'];
 		$pluralRule = static::_pluralRule($array['locale']);
 
@@ -268,6 +254,32 @@ class PoParser extends Parser {
 		$output .= "\"Content-Transfer-Encoding: 8bit\\n\"\n";
 		$output .= "\"Plural-Forms: $pluralRule\\n\"\n\n";
 		return $output;
+	}
+
+/**
+ * Return the string for one translation entry
+ *
+ * @param mixed $msgid
+ * @param mixed $details
+ * @param mixed $paths
+ * @return string
+ */
+	protected static function _writeTranslation($msgid, $details, $paths) {
+		$plural = false; // TODO $details['msgid_plural'];
+		$occurrences = implode("\n#: ", $details['references']);
+		$header = '#: ' . str_replace(DS, '/', str_replace($paths, '', $occurrences)) . "\n";
+
+		if ($plural === false) {
+			$sentence = "msgid \"{$msgid}\"\n";
+			$sentence .= "msgstr \"\"\n\n";
+		} else {
+			$sentence = "msgid \"{$msgid}\"\n";
+			$sentence .= "msgid_plural \"{$plural}\"\n";
+			$sentence .= "msgstr[0] \"\"\n";
+			$sentence .= "msgstr[1] \"\"\n\n";
+		}
+
+		return $header . $sentence;
 	}
 
 	protected static function _pluralRule($locale) {
