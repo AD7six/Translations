@@ -1,1 +1,8 @@
-{"locale":"en","domain":"default","category":"LC_MESSAGES","translations":{"foo":"foo value"}}
+{
+   "domain" : "default",
+   "translations" : {
+      "foo" : "foo value"
+   },
+   "category" : "LC_MESSAGES",
+   "locale" : "en"
+}
