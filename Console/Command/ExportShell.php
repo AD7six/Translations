@@ -15,7 +15,8 @@ class ExportShell extends AppShell {
 	protected $_settings = array(
 		'domain' => 'default',
 		'locale' => 'en',
-		'category' => 'LC_MESSAGES'
+		'category' => 'LC_MESSAGES',
+		'compact' => false
 	);
 
 /**
@@ -41,6 +42,11 @@ class ExportShell extends AppShell {
 			))
 			->addOption('category', array(
 				'help' => 'the category to export, defaults to "LC_MESSAGES"'
+			))
+			->addOption('compact', array(
+				'help' => 'Use compact format (do not include meta information)',
+				'boolean' => true,
+				'default' => false
 			));
 	}
 
@@ -48,6 +54,7 @@ class ExportShell extends AppShell {
  * Export translations to the specified path
  * Currently supports:
  * 	json
+ * 	po
  *
  * @throws \Exception if the file specified is not writable
  */
