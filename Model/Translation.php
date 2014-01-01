@@ -467,7 +467,7 @@ class Translation extends TranslationsAppModel {
 			'domain' => 'default',
 			'category' => 'LC_MESSAGES',
 			'format' => null,
-			'details' => true
+			'compact' => true
 		);
 
 		static::config();
@@ -492,11 +492,11 @@ class Translation extends TranslationsAppModel {
 			'domain' => true,
 			'category' => true,
 			'translations' => true,
-			'details' => true
+			'compact' => true
 		));
 		$return['count'] = count($settings['translations']);
 		$return['string'] = $parserClass::generate($settings);
-		$return['details'] = $settings['details'];
+		$return['compact'] = $settings['compact'];
 
 		$return['success'] = true;
 		if ($file && !file_put_contents($file, $return['string'])) {
@@ -1105,10 +1105,10 @@ class Translation extends TranslationsAppModel {
 			$key = $row['key'];
 			$plural = $row['plural_case'];
 			$row['references'] = json_decode($row['references']);
-			if ($settings['details']) {
-				$row = array_intersect_key($row, $keys);
-			} else {
+			if ($settings['compact']) {
 				$row = $row['value'];
+			} else {
+				$row = array_intersect_key($row, $keys);
 			}
 			if (is_null($plural)) {
 				$data[$key] = $row;
