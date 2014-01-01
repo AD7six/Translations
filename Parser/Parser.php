@@ -39,32 +39,51 @@ abstract class Parser {
 			$defaults,
 			array_flip(array('domain', 'locale', 'category'))
 		);
-		$count = 0;
+
 		$return = array();
 		foreach ($translations as $key => $value) {
 			if (preg_match('/^[a-z]+([A-Z][a-z]+)+$/', $key)) {
 				$key = str_replace('_', '.', Inflector::underscore($key));
 			}
 
-			if (is_array($value)) {
-				foreach ($value as $case => $val) {
-					$return[] = $defaults + array(
-						'key' => $key,
-						'value' => $val,
-						'plural_case' => $case
-					);
-					$count++;
-				}
-				continue;
-			}
-
-			$return[] = $defaults + compact('key', 'value');
-			$count++;
+			static::_parseArrayItem($key, $value, $defaults, $return);
 		}
 
 		return array(
-			'count' => $count,
+			'count' => count($return),
 			'translations' => $return
 		);
+	}
+
+/**
+ * Add found translations to the return array
+ *
+ * Handle the permutations value may have
+ *
+ *  - string
+ *  - array of strings (plural case indexed)
+ *  - array of details
+ *  - array of array of strings (plural case indexed)
+ *
+ * @param string $key
+ * @param mixed $value
+ * @param array $defaults
+ * @param array $return
+ */
+	protected static function _parseArrayItem($key, $value, $defaults, &$return) {
+		if (is_array($value) && isset($value[0])) {
+			foreach ($value as $case => $val) {
+				static::_parseArrayItem($key, $value[$case], array('plural_case' => $case) + $defaults, $return);
+			}
+			return;
+		}
+
+		if (is_array($value)) {
+			$value['key'] = $key;
+		} else {
+			$value = compact('key', 'value');
+		}
+
+		$return[] = $defaults + $value;
 	}
 }
