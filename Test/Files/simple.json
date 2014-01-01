@@ -1,5 +1,6 @@
 {
    "domain" : "default",
+   "compact" : true,
    "translations" : {
       "foo" : "foo value"
    },

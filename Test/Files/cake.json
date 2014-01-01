@@ -1,5 +1,6 @@
 {
    "domain" : "cake",
+   "compact" : true,
    "translations" : {
       "September" : "September",
       "%d hour" : "%d hour",
