@@ -1098,7 +1098,7 @@ class Translation extends TranslationsAppModel {
 
 		$data = array();
 		$keys = array_flip(array(
-			'value', 'comments', 'references', 'history'
+			'value', 'plural_case', 'comments', 'references', 'history'
 		));
 		foreach ($all as $row) {
 			$row = current($row);
@@ -1113,7 +1113,7 @@ class Translation extends TranslationsAppModel {
 			if (is_null($plural)) {
 				$data[$key] = $row;
 			} else {
-				$data[$key][$plural_case] = $row;
+				$data[$key][$plural] = $row;
 			}
 		}
 
