@@ -1077,7 +1077,14 @@ class Translation extends TranslationsAppModel {
 			$locales = $this->_fallbackLocales($settings['locale']);
 			$return = array();
 			foreach ($locales as $locale) {
-				$return += $this->_export(compact('locale') + $settings);
+				$last = $this->_export(compact('locale') + $settings);
+				$return += $last;
+			}
+
+			if (!$settings['compact']) {
+				foreach($last as $i => $details) {
+					$return[$i] = array_filter($return[$i]) + $details;
+				}
 			}
 			return $return;
 		}
