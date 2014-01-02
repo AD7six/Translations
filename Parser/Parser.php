@@ -63,7 +63,7 @@ abstract class Parser {
  *  - string
  *  - array of strings (plural case indexed)
  *  - array of details
- *  - array of array of strings (plural case indexed)
+ *  - array of array of details (plural case indexed)
  *
  * @param string $key
  * @param mixed $value
