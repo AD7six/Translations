@@ -177,6 +177,9 @@ class Translation extends TranslationsAppModel {
  * @return boolean
  */
 	public function beforeSave($options = array()) {
+		if (isset($this->data[$this->alias]['value'])) {
+			$this->data[$this->alias]['value'] = $this->correctPercent($this->data[$this->alias]['value']);
+		}
 		$fields = array(
 			'references',
 			'history'
@@ -191,6 +194,32 @@ class Translation extends TranslationsAppModel {
 			}
 		}
 		return true;
+	}
+
+/**
+ * correctPercent
+ *
+ * If the translation string contains NO sprintf markers or contains
+ * String::replace replaement markers - do nothing. Otherwise ensure
+ * that a loose % is escaped as %%
+ *
+ * @param string $string
+ * @return string
+ */
+	public function correctPercent($string) {
+		if (
+			strpos($string, '{') !== false ||
+			(
+				strpos($string, '%s') === false &&
+				strpos($string, '%d') === false &&
+				strpos($string, '%1$') === false &&
+				strpos($string, '%.') === false
+			)
+		) {
+			return $string;
+		}
+
+		return preg_replace('/(?<!%)%(?![%bcdeEfFgGosuxX\d\.])/', '%%', $string);
 	}
 
 /**

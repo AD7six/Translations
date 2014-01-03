@@ -15,10 +15,6 @@ class TestTranslation extends Translation {
 		return self::_pluralCases($locale);
 	}
 
-	public static function pluralRule($locale = null) {
-		return self::_pluralRule($locale);
-	}
-
 	public static function getTranslations() {
 		return self::$_translations;
 	}
@@ -1049,5 +1045,33 @@ class TranslationTest extends CakeTestCase {
 
 		$return = $class::autoDetectLocale(array('es', 'en_GB'));
 		$this->assertEquals('en', $return);
+	}
+
+/**
+ * testConvertPercent
+ *
+ * @dataProvider convertPercentProvider
+ */
+	public function testConvertPercent($input, $expected = null) {
+		$expected = $expected ?: $input;
+		$result = $this->Translation->correctPercent($input);
+
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * convertPercentProvider
+ *
+ * @return array
+ */
+	public function convertPercentProvider() {
+		return array(
+			array('No % conversion'),
+			array('{name} 100%'),
+			array('%1$d 100%'),
+
+			array('%s 100%', '%s 100%%'),
+			array('%d 100%', '%d 100%%'),
+		);
 	}
 }
