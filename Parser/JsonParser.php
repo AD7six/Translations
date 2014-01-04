@@ -45,6 +45,6 @@ class JsonParser extends Parser {
  * @return string
  */
 	public static function generate($array = array()) {
-		return json_encode($array,  JSON_PRETTY_PRINT);
+		return json_encode($array,  JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 	}
 }
