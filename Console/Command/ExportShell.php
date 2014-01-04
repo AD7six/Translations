@@ -13,9 +13,6 @@ class ExportShell extends AppShell {
  * @var array
  */
 	protected $_settings = array(
-		'domain' => 'default',
-		'locale' => 'en',
-		'category' => 'LC_MESSAGES',
 		'compact' => false
 	);
 
@@ -35,7 +32,7 @@ class ExportShell extends AppShell {
 				'required' => true
 			))
 			->addOption('locale', array(
-				'help' => 'the locale to export, defaults to "en"'
+				'help' => sprintf('the locale to export, defaults to "%s"', Configure::read('Config.language'))
 			))
 			->addOption('domain', array(
 				'help' => 'the domain to export, defaults to "default"'
@@ -67,7 +64,7 @@ class ExportShell extends AppShell {
 		$return = Translation::export($file, $this->_settings);
 
 		if ($return['success']) {
-			$this->out(sprintf('Wrote %d translations', $return['count']));
+			$this->out(sprintf('Wrote %d translations', count($return['translations'])));
 		} else {
 			$this->out(sprintf('Error creating %s', $file));
 		}

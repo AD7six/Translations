@@ -13,9 +13,6 @@ class ImportShell extends AppShell {
  * @var array
  */
 	protected $_settings = array(
-		'domain' => 'default',
-		'locale' => null,
-		'category' => 'LC_MESSAGES'
 	);
 
 /**
@@ -26,7 +23,7 @@ class ImportShell extends AppShell {
  * @link http://book.cakephp.org/2.0/en/console-and-shells.html#Shell::getOptionParser
  */
 	public function getOptionParser() {
-		$this->_settings = Translation::config();
+
 		$parser = parent::getOptionParser();
 		return $parser
 			->addArgument('file', array(
@@ -34,7 +31,7 @@ class ImportShell extends AppShell {
 				'required' => true
 			))
 			->addOption('locale', array(
-				'help' => 'the locale to import, defaults to "en"'
+				'help' => 'the locale to import'
 			))
 			->addOption('domain', array(
 				'help' => 'the domain to import, defaults to "default"'
@@ -69,7 +66,7 @@ class ImportShell extends AppShell {
 
 		$this->Translation = ClassRegistry::init('Translations.Translation');
 
-		$return = Translation::parse($file, $this->_settings);
+		$return = Translation::parse($file, array_filter($this->_settings));
 		$this->_updateSettings($return['translations']);
 
 		$this->out(sprintf('Found %d translations', $return['count']));
@@ -89,6 +86,9 @@ class ImportShell extends AppShell {
 		}
 
 		$preventNewTranslations = $this->_settings['locale'] !== Configure::read('Config.language');
+		if (isset($return['translations'][0]['locale'])) {
+			$preventNewTranslations = $return['translations'][0]['locale'] !== Configure::read('Config.language');
+		}
 
 		foreach ($return['translations'] as $translation) {
 			if ($preventNewTranslations && !Translation::hasTranslation($translation['key'])) {
