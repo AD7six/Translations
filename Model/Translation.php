@@ -582,11 +582,6 @@ class Translation extends TranslationsAppModel {
  */
 	public static function parse($file, $settings = array()) {
 		static::config();
-		$settings = $settings + array(
-			'locale' => Configure::read('Config.language'),
-			'domain' => static::$_config['domain'],
-			'category' => static::$_config['category'],
-		);
 
 		if (is_array($file)) {
 			if (!empty($file['translations'])) {
