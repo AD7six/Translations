@@ -13,8 +13,12 @@ class PoParser extends Parser {
  * @return array
  */
 	public static function parse($file, $defaults = array()) {
-		$filename = preg_replace('@\.pot?$@', '', basename($file));
-		$defaults = array('domain' => $filename) + $defaults + Translation::config();
+		$domain = pathinfo($file, PATHINFO_FILENAME);
+		if (preg_match('@Locale/(\w+)/(\w+)/(\w+)\.po$@', $file, $matches)) {
+			list(, $locale, $category, $domain) = $matches;
+		}
+		$defaults = compact('locale', 'cateogry', 'domain') + $defaults + Translation::config();
+
 		$file = fopen($file, 'r');
 		$isHeader = true;
 		$type = 0;
