@@ -297,6 +297,12 @@ class PoParser extends Parser {
 		return $header . $sentence;
 	}
 
+/**
+ * The plural rule to use in the pot file header
+ *
+ * @param string $locale
+ * @return string
+ */
 	protected static function _pluralRule($locale) {
 		return Translation::pluralRule($locale);
 	}
