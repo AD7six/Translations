@@ -266,14 +266,29 @@ class PoParser extends Parser {
  */
 	protected static function _writeTranslation($msgid, $details, $paths) {
 		$plural = false; // TODO $details['msgid_plural'];
-		$occurrences = implode("\n#: ", $details['references']);
-		$header = '#: ' . str_replace(DS, '/', str_replace($paths, '', $occurrences)) . "\n";
+
+		if (!is_array($details)) {
+			$details = array(
+				'value' => $details
+			);
+		}
+
+		$value = $details['value'];
+		if ($value === $msgid) {
+			$value = '';
+		}
+		$header = '';
+
+		if (!empty($details['references'])) {
+			$occurrences = implode("\n#: ", $details['references']);
+			$header = '#: ' . str_replace(DS, '/', str_replace($paths, '', $occurrences)) . "\n";
+		}
 
 		if ($plural === false) {
-			$sentence = "msgid \"{$msgid}\"\n";
-			$sentence .= "msgstr \"\"\n\n";
+			$sentence = "msgid \"$msgid\"\n";
+			$sentence .= "msgstr \"$value\"\n\n";
 		} else {
-			$sentence = "msgid \"{$msgid}\"\n";
+			$sentence = "msgid \"$msgid\"\n";
 			$sentence .= "msgid_plural \"{$plural}\"\n";
 			$sentence .= "msgstr[0] \"\"\n";
 			$sentence .= "msgstr[1] \"\"\n\n";
