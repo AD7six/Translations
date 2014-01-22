@@ -528,6 +528,11 @@ class Translation extends TranslationsAppModel {
 		$return['compact'] = $settings['compact'];
 
 		$return['success'] = true;
+
+		$dir = dirname($file);
+		if (!is_dir($dir)) {
+			mkdir($dir, 0777, true);
+		}
 		if ($file && !file_put_contents($file, $return['string'])) {
 			$return['success'] = false;
 		}
