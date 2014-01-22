@@ -50,7 +50,7 @@ class ExtractJsTask extends ExtractBaseTask {
 							'file' => $file,
 							'line' => $i + 1
 						);
-						$this->_addTranslation('javascript', $text, $details);
+						$this->_addTranslation('LC_MESSAGES', 'javascript', $text, $details);
 					}
 				}
 			}
