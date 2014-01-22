@@ -26,7 +26,7 @@ class PoParser extends Parser {
 			'count' => 0,
 			'translations' => array(),
 			'settings' => array(
-				'domain' => $filename
+				'domain' => $domain
 			)
 		);
 		$comments = $extractedComments = $references = $flags = $previous = $translations = array();
@@ -240,9 +240,10 @@ class PoParser extends Parser {
  */
 	protected static function _writeHeader($array = array()) {
 		$domain = $array['domain'];
+		$locale = $array['locale'];
 		$pluralRule = static::_pluralRule($array['locale']);
 
-		$output = "# LANGUAGE translation for domain '$domain'\n";
+		$output = "# $locale translations for '$domain'\n";
 		$output .= "# Copyright YEAR NAME <EMAIL@ADDRESS>\n";
 		$output .= "#\n";
 		//$output .= "#, fuzzy\n";
