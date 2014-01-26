@@ -61,8 +61,13 @@ class ExportShell extends AppShell {
 			$this->_settings[$key] = $val;
 		}
 
+		$settings = $this->_settings;
 		$files = $this->permutateFiles($this->args);
-		foreach($files as $file) {
+		foreach($files as $i => $file) {
+			if (!is_numeric($i)) {
+				$this->_settings = $file + $settings;
+				$file = $i;
+			}
 			$this->out(sprintf('<info>Processing %s</info>', $file));
 			$this->processFile($file);
 		}
@@ -79,34 +84,41 @@ class ExportShell extends AppShell {
 	}
 
 	public function permutateFiles($files) {
-		$categories = array('LC_MESSAGES'); //Translation::categories();
+		if (count($files) !== 1 && !in_array($files[0], array('Locale', 'Locale/'))) {
+			return $files;
+		}
+
+		$this->_settings['locale'] = null;
+		$this->_settings['category'] = null;
+		$this->_settings['domain'] = null;
+
+		$categories = array('LC_MESSAGES');
 		$domains = Translation::domains();
 		$locales = array_keys(Translation::locales());
 		$map = array_flip((new L10n())->map());
+
 		foreach($locales as &$locale) {
 			if(strlen($locale) === 2) {
 				$locale = $map[$locale];
 			}
 		}
 
-		if (count($files) === 1) {
-			if ($files === array('Locale') || $files === array('Locale/')) {
-				$return = array();
-				foreach($domains as $domain) {
-					$return[] = "Locale/$domain.pot";
+		$return = array();
+		foreach($domains as $domain) {
+			$return["Locale/$domain.pot"] = compact('domain');
 
-					foreach($categories as $category) {
-						foreach($locales as $locale) {
-							$return[] = "Locale/$locale/$category/$domain.po";
-						}
-					}
+			foreach($categories as $category) {
+				foreach($locales as $locale) {
+					$return["Locale/$locale/$category/$domain.po"] = compact(
+						'locale',
+						'category',
+						'domain'
+					);;
 				}
-
-				sort($return);
-				return $return;
 			}
-			return $files;
 		}
-		return $files;
+
+		ksort($return);
+		return $return;
 	}
 }
