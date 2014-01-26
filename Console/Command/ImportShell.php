@@ -61,7 +61,9 @@ class ImportShell extends AppShell {
 		$this->Translation = ClassRegistry::init('Translations.Translation');
 
 		$settings = $this->_settings;
-		foreach($this->args as $file) {
+
+		$files = $this->permutateFiles($this->args);
+		foreach($files as $file) {
 			$this->_settings = $settings;
 
 			$this->out(sprintf('<info>Processing %s</info>', $file));
@@ -150,5 +152,20 @@ class ImportShell extends AppShell {
 		$this->_settings['locale'] = $translation['locale'];
 		$this->_settings['domain'] = $translation['domain'];
 		$this->_settings['category'] = $translation['category'];
+	}
+
+	public function permutateFiles($input) {
+		$return = array();
+		foreach($input as $file) {
+			if (is_dir($file)) {
+				App::uses('Folder', 'Utility');
+				$dir = new Folder($file);
+				$return = array_merge($return, $dir->findRecursive());
+				continue;
+			}
+			$return[] = $file;
+		}
+
+		return $return;
 	}
 }
