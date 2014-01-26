@@ -732,8 +732,13 @@ class Translation extends TranslationsAppModel {
 			}
 		} elseif (static::_loadModel()) {
 			$localesUsed = static::$_model->find('all', $options['query']);
+			$map = (new L10n())->map();
 			foreach ($localesUsed as $locale) {
-				$return[$locale['Translation']['locale']] = static::$_locales[$locale['Translation']['locale']];
+				$key = $locale['Translation']['locale'];
+				if (!isset(static::$_locales[$key])) {
+					$key = $map[$key];
+				}
+				$return[$locale['Translation']['locale']] = static::$_locales[$key];
 			}
 		}
 
