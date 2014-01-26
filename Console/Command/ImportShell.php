@@ -36,10 +36,12 @@ class ImportShell extends AppShell {
 				'help' => 'the category to import, defaults to "LC_MESSAGES"'
 			))
 			->addOption('overwrite', array(
-				'help' => 'Overwrite existing translations - or just create new ones? defaults to false'
+				'help' => 'Overwrite existing translations - or just create new ones? defaults to false',
+				'boolean' => true
 			))
 			->addOption('purge', array(
-				'help' => 'Delete translations that are not in the import file? defaults to false'
+				'help' => 'Delete translations that are not in the import file? defaults to false',
+				'boolean' => true
 			));
 	}
 
@@ -132,8 +134,7 @@ class ImportShell extends AppShell {
 				continue;
 			}
 			$this->out("Deleting translation $id");
-			$this->Translation->id = $this->Translation->field('id', $conditions + array('key' => $id));
-			$this->Translation->delete();
+			$this->Translation->deleteAll(array('key' => $id));
 		}
 	}
 
