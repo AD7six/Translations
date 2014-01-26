@@ -61,13 +61,52 @@ class ExportShell extends AppShell {
 			$this->_settings[$key] = $val;
 		}
 
-		$return = Translation::export($file, $this->_settings);
+		$files = $this->permutateFiles($this->args);
+		foreach($files as $file) {
+			$this->out(sprintf('<info>Processing %s</info>', $file));
+			$this->processFile($file);
+		}
+	}
 
+	public function processFile($file) {
+		$return = Translation::export($file, $this->_settings);
 		if ($return['success']) {
 			$this->out(sprintf('Wrote %d translations', count($return['translations'])));
 		} else {
 			$this->out(sprintf('Error creating %s', $file));
 		}
 		$this->out('Done');
+	}
+
+	public function permutateFiles($files) {
+		$categories = array('LC_MESSAGES'); //Translation::categories();
+		$domains = Translation::domains();
+		$locales = array_keys(Translation::locales());
+		$map = array_flip((new L10n())->map());
+		foreach($locales as &$locale) {
+			if(strlen($locale) === 2) {
+				$locale = $map[$locale];
+			}
+		}
+
+		if (count($files) === 1) {
+			if ($files === array('Locale') || $files === array('Locale/')) {
+				$return = array();
+				foreach($domains as $domain) {
+					$return[] = "Locale/$domain.pot";
+
+					foreach($categories as $category) {
+						foreach($locales as $locale) {
+							$return[] = "Locale/$locale/$category/$domain.po";
+						}
+					}
+				}
+
+				sort($return);
+				return $return;
+			}
+			return $files;
+		}
+		return $files;
 	}
 }

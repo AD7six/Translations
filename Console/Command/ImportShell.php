@@ -26,10 +26,6 @@ class ImportShell extends AppShell {
 
 		$parser = parent::getOptionParser();
 		return $parser
-			->addArgument('file', array(
-				'help' => 'relative or abs path to translations file',
-				'required' => true
-			))
 			->addOption('locale', array(
 				'help' => 'the locale to import'
 			))
@@ -56,16 +52,30 @@ class ImportShell extends AppShell {
  * are deleted. a single deleteAll query isn't used because.. the field key
  * doesn't get escaped correctly
  *
- * @throws \Exception if the file specified doesn't exist
  */
 	public function main() {
-		$file = $this->args[0];
 		foreach ($this->params as $key => $val) {
 			$this->_settings[$key] = $val;
 		}
 
 		$this->Translation = ClassRegistry::init('Translations.Translation');
 
+		$settings = $this->_settings;
+		foreach($this->args as $file) {
+			$this->_settings = $settings;
+
+			$this->out(sprintf('<info>Processing %s</info>', $file));
+			$this->processFile($file);
+		}
+	}
+
+/**
+ * processFile
+ *
+ * @param string $file
+ * @throws \Exception if the file specified doesn't exist
+ */
+	public function processFile($file) {
 		$return = Translation::parse($file, array_filter($this->_settings));
 		$this->_updateSettings($return['translations']);
 
