@@ -1229,6 +1229,11 @@ class Translation extends TranslationsAppModel {
  * @param string  locale
  */
 	public static function pluralRule($locale = null) {
+		if (strlen($locale) === 3) {
+			$map = (new L10n())->map();
+			$locale = $map[$locale];
+		}
+
 		$locale = substr($locale, 0, 2);
 
 		if (array_key_exists($locale, static::$_pluralRules)) {
