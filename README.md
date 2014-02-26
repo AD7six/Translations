@@ -22,12 +22,12 @@ See the docs folder for more detailed information.
 
 Install like any other CakePHP plugin, e.g.:
 
-    git submodule add git@github.com:nodesagency/Translations.git app/Plugin/Translations
+    git submodule add git@github.com:AD7six/cakephp-translations.git app/Plugin/Translations
 
 OR
 
     cd app/Plugin
-    git clone git://github.com/nodesagency/Translations.git
+    git clone git://github.com/AD7six/cakephp-translations.git Translations
 
 Load the db schema:
 
