@@ -68,13 +68,20 @@ class ExportShell extends AppShell {
 				$this->_settings = $file + $settings;
 				$file = $i;
 			}
-			$this->out(sprintf('<info>Processing %s</info>', $file));
+			$this->out(sprintf(
+				'<info>Processing %s (%s, %s, %s)</info>',
+				$file,
+				$this->_settings['locale'],
+				$this->_settings['domain'],
+				$this->_settings['category']
+			));
 			$this->processFile($file);
 		}
 	}
 
 	public function processFile($file) {
 		$return = Translation::export($file, $this->_settings);
+
 		if ($return['success']) {
 			$this->out(sprintf('Wrote %d translations', count($return['translations'])));
 		} else {
@@ -95,13 +102,6 @@ class ExportShell extends AppShell {
 		$categories = array('LC_MESSAGES');
 		$domains = Translation::domains();
 		$locales = array_keys(Translation::locales());
-		$map = array_flip((new L10n())->map());
-
-		foreach($locales as &$locale) {
-			if(strlen($locale) === 2) {
-				$locale = $map[$locale];
-			}
-		}
 
 		$return = array();
 		foreach($domains as $domain) {
@@ -109,7 +109,14 @@ class ExportShell extends AppShell {
 
 			foreach($categories as $category) {
 				foreach($locales as $locale) {
-					$return["Locale/$locale/$category/$domain.po"] = compact(
+					$fileLocale = $locale;
+
+					if(strlen($fileLocale) === 2) {
+						$map = (new L10n())->map();
+						$fileLocale = array_search($fileLocale, $map);
+					}
+
+					$return["Locale/$fileLocale/$category/$domain.po"] = compact(
 						'locale',
 						'category',
 						'domain'
