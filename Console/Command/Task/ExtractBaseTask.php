@@ -110,6 +110,8 @@ class ExtractBaseTask extends ExtractTask {
 
 		foreach ($this->_storage as $category => $domains) {
 			foreach ($domains as $domain => $sentences) {
+				ksort($sentences);
+
 				$output = $this->_writeHeader();
 				foreach ($sentences as $sentence => $header) {
 					$output .= $header . $sentence;
