@@ -493,8 +493,8 @@ class Translation extends TranslationsAppModel {
 			'locale' => Configure::read('Config.language'),
 			'nested' => false,
 			'addDefaults' => true,
-			'domain' => 'default',
-			'category' => 'LC_MESSAGES',
+			'domain' => static::$_config['domain'],
+			'category' => static::$_config['category'],
 			'format' => null,
 			'compact' => true
 		);
@@ -523,6 +523,7 @@ class Translation extends TranslationsAppModel {
 			'translations' => true,
 			'compact' => true
 		));
+
 		$return['count'] = count($settings['translations']);
 		$return['string'] = $parserClass::generate($settings);
 		$return['compact'] = $settings['compact'];

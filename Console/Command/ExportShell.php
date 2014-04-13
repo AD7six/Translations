@@ -91,41 +91,77 @@ class ExportShell extends AppShell {
 	}
 
 	public function permutateFiles($files) {
-		if (count($files) !== 1 && !in_array($files[0], array('Locale', 'Locale/'))) {
-			return $files;
+		if (count($files) === 1 && strpos($files[0], '.') === false) {
+
+			$dir = rtrim($files[0], DS);
+			if ($dir === 'Locale') {
+				$extension = 'po';
+			} else {
+				$extension = 'json';
+			}
+
+			$locales = array_keys(Translation::locales());
+			$categories = array('LC_MESSAGES');
+			$domains = Translation::domains();
+			if ($extension === 'json') {
+				$domains = array('javascript');
+			}
+
+			$return = array();
+			foreach($domains as $domain) {
+
+				if ($extension === 'po') {
+					$return["$dir/$domain.pot"] = compact('domain');
+				}
+
+				foreach($categories as $category) {
+					foreach($locales as $locale) {
+
+						if ($extension === 'po') {
+
+							$fileLocale = $locale;
+							if(strlen($fileLocale) === 2) {
+								$map = (new L10n())->map();
+								$fileLocale = array_search($fileLocale, $map);
+							}
+							$path = "$dir/$fileLocale/$category/$domain.$extension";
+
+						} else {
+
+							$path = "$dir/$locale.$extension";
+
+						}
+
+						$return[$path] = compact(
+							'locale',
+							'category',
+							'domain'
+						);;
+					}
+				}
+			}
+
+			ksort($return);
+			return $return;
 		}
 
-		$this->_settings['locale'] = null;
-		$this->_settings['category'] = null;
-		$this->_settings['domain'] = null;
-
-		$categories = array('LC_MESSAGES');
-		$domains = Translation::domains();
-		$locales = array_keys(Translation::locales());
-
 		$return = array();
-		foreach($domains as $domain) {
-			$return["Locale/$domain.pot"] = compact('domain');
 
-			foreach($categories as $category) {
-				foreach($locales as $locale) {
-					$fileLocale = $locale;
+		foreach($files as $file) {
+			if (preg_match('@Locale/(\w+)/(\w+)/(\w+)\.po$@', $file, $matches)) {
+				list(, $locale, $category, $domain) = $matches;
 
-					if(strlen($fileLocale) === 2) {
-						$map = (new L10n())->map();
-						$fileLocale = array_search($fileLocale, $map);
-					}
-
-					$return["Locale/$fileLocale/$category/$domain.po"] = compact(
-						'locale',
-						'category',
-						'domain'
-					);;
+				if(strlen($locale) === 3) {
+					$map = (new L10n())->map();
+					$locale = $map[$locale];
 				}
+
+				$return[$file] = compact('locale', 'category', 'domain');
+			} else {
+				$return[] = $file;
 			}
 		}
 
-		ksort($return);
 		return $return;
 	}
 }
