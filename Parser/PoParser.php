@@ -3,6 +3,8 @@ App::uses('Parser', 'Translations.Parser');
 
 class PoParser extends Parser {
 
+	protected static $_translations = [];
+
 /**
  * parse
  *
@@ -29,183 +31,99 @@ class PoParser extends Parser {
 				'domain' => $domain
 			)
 		);
-		$comments = $extractedComments = $references = $flags = $previous = $translations = array();
-		$msgid = $msgid_plural = "";
+
+		$defaultItem = $item = array(
+			'locale' => $defaults['locale'],
+			'domain' => $defaults['domain'],
+			'category' => $defaults['category']
+		);
 		$plural = 0;
+		$section = null;
 
 		do {
 			$line = trim(fgets($file));
-			if (!$line) {
+
+			if ($line === '') {
+				if ($section === 'value') {
+					static::_store($item);
+					$item = $defaultItem;
+				}
+
+				$section = null;
 				continue;
-			} elseif ($line[0] == "#") {
+			}
+
+			if ($line[0] == "#") {
+				$section = 'comments';
 				if (!empty($line[1])) {
+					$isHeader = false;
 					if ($line[1] === '.') {
-						$extractedComments[] = trim(substr($line, 2));
+						$item['extractedComments'][] = trim(substr($line, 2));
 					} elseif ($line[1] === ':') {
-						$references[] = trim(substr($line, 2));
+						$item['references'][] = trim(substr($line, 2));
 					} elseif ($line[1] === ',') {
 						//$flags[trim(substr($line, 2))] = true;
 					} elseif ($line[1] === '|') {
-						$previous[] = trim(substr($line, 2));
+						$item['previous'][] = trim(substr($line, 2));
 					}
 				} elseif (trim(substr($line, 1))) {
 					if ($isHeader) {
 						$return['comments'][] = substr($line, 2);
 					} else {
-						$comments[] = substr($line, 2);
+						$item['comments'][] = substr($line, 2);
 					}
 				}
 				continue;
 			}
 
-			if (preg_match("/msgid\s+\"(.+)\"$/i", $line, $regs)) {
-				$type = 1;
-				$msgid = stripcslashes($regs[1]);
-			} elseif (preg_match("/msgid\s+\"\"$/i", $line, $regs)) {
-				$type = 2;
-				$msgid = "";
-			} elseif (preg_match("/^\"(.*)\"$/i", $line, $regs) && ($type == 1 || $type == 2 || $type == 3)) {
-				$type = 3;
-				$msgid .= stripcslashes($regs[1]);
-			} elseif (preg_match("/msgstr\s+\"(.+)\"$/i", $line, $regs) && ($type == 1 || $type == 3) && $msgid) {
-				$translations[$msgid] = array(
-					'locale' => $defaults['locale'],
-					'domain' => $defaults['domain'],
-					'category' => $defaults['category'],
-					'key' => $msgid,
-					'value' => stripcslashes($regs[1]) ?: $msgid
-				) + array_filter(array(
-					'comments' => $comments,
-					'extractedComments' => $extractedComments,
-					'references' => $references,
-					'flags' => $flags,
-					'previous' => $previous,
-				));
+		   	if (preg_match("/msgid\s+\"(.*)\"$/i", $line, $regs)) {
 				$isHeader = false;
-				$comments = $extractedComments = $references = $flags = $previous =array();
-				$type = 4;
-			} elseif (preg_match("/msgstr\s+\"\"$/i", $line, $regs) && ($type == 1 || $type == 3) && $msgid) {
-				$type = 4;
-				$translations[$msgid] = array(
-					'locale' => $defaults['locale'],
-					'domain' => $defaults['domain'],
-					'category' => $defaults['category'],
-					'key' => $msgid,
-					'value' => $msgid
-				) + array_filter(array(
-					'comments' => $comments,
-					'extractedComments' => $extractedComments,
-					'references' => $references,
-					'flags' => $flags,
-					'previous' => $previous,
-				));
-				$isHeader = false;
-				$comments = $extractedComments = $references = $flags = $previous =array();
-			} elseif (preg_match("/^\"(.*)\"$/i", $line, $regs) && $type == 4 && $msgid) {
-				$translations[$msgid]['msgstr'] .= stripcslashes($regs[1]);
-			} elseif (preg_match("/msgid_plural\s+\"(.+)\"$/i", $line, $regs)) {
-				$type = 6;
-				$msgid_plural = stripcslashes($regs[1]);
-			} elseif (preg_match("/^\"(.*)\"$/i", $line, $regs) && $type == 6 && $msgid) {
-				$type = 6;
-			} elseif (preg_match("/msgstr\[(\d+)\]\s+\"(.+)\"$/i", $line, $regs) && ($type == 6 || $type == 7) && $msgid) {
-				if (!$regs[1]) {
-					$translations[$msgid] = array(
-						'locale' => $defaults['locale'],
-						'domain' => $defaults['domain'],
-						'category' => $defaults['category'],
-						'key' => $msgid,
-						'value' => $regs[2] ?: $msgid
-					) + array_filter(array(
-						'comments' => $comments,
-						'extractedComments' => $extractedComments,
-						'references' => $references,
-						'flags' => $flags,
-						'previous' => $previous,
-					));
+				$section = 'key';
+				$item['key'] = stripcslashes($regs[1]);
+				continue;
+			}
+
+			if (preg_match("/msgid_plural\s+\"(.*)\"$/i", $line, $regs)) {
+				$section = 'plural';
+				$item['plural'] = stripcslashes($regs[1]);
+				continue;
+			}
+
+			if (preg_match("/msgstr\s+\"(.*)\"$/i", $line, $regs)) {
+				$section = 'value';
+				$item['value'] = stripcslashes($regs[1]);
+				continue;
+			}
+
+			if (preg_match("/msgstr\[(\d+)\]\s+\"(.+)\"$/i", $line, $regs)) {
+				$section = 'piural_value';
+				$pluralCase = $regs[1];
+				$item['plural_value'][$pluralCase] = stripcslashes($regs[2]);
+				continue;
+			}
+
+			if (preg_match("/^\"(.*)\"$/i", $line, $regs)) {
+				if ($section === 'plural_value') {
+					$item['plural_value'][$pluralCase] .= stripcslashes($regs[1]);
+					continue;
 				}
 
-				$key = sprintf('%s[%d]', $msgid, $regs[1]);
-				$translations[$key] = array(
-					'locale' => $defaults['locale'],
-					'domain' => $defaults['domain'],
-					'category' => $defaults['category'],
-					'key' => $msgid_plural,
-					'value' => $regs[2] ?: $msgid_plural,
-					'single_key' => $msgid,
-					'plural_case' => (int)$regs[1]
-				) + array_filter(array(
-					'comments' => $comments,
-					'extractedComments' => $extractedComments,
-					'references' => $references,
-					'flags' => $flags,
-					'previous' => $previous,
-				));
-
-				$isHeader = false;
-				if ($regs[1]) { // @todo temporary fix, only clear these variables for the not-0-case plural
-					$comments = $extractedComments = $references = $flags = $previous = array();
-				}
-				$type = 7;
-			} elseif (preg_match("/msgstr\[(\d+)\]\s+\"\"$/i", $line, $regs) && ($type == 6 || $type == 7) && $msgid) {
-				$plural = 'msgstr_' . $regs[1];
-
-				$translations[$msgid] = array(
-					'locale' => $defaults['locale'],
-					'domain' => $defaults['domain'],
-					'category' => $defaults['category'],
-					'key' => $msgid,
-					'value' => $msgid,
-				) + array_filter(array(
-					'comments' => $comments,
-					'extractedComments' => $extractedComments,
-					'references' => $references,
-					'flags' => $flags,
-					'previous' => $previous,
-				));
-
-				$translations[$msgid_plural . '[' . $regs[1] . ']'] = array(
-					'locale' => $defaults['locale'],
-					'domain' => $defaults['domain'],
-					'category' => $defaults['category'],
-					'key' => $msgid_plural,
-					'value' => $msgid_plural,
-					'single_key' => $msgid,
-					'plural_case' => (int)$regs[1]
-				) + array_filter(array(
-					'comments' => $comments,
-					'extractedComments' => $extractedComments,
-					'references' => $references,
-					'flags' => $flags,
-					'previous' => $previous,
-				));
-
-				$isHeader = false;
-				$type = 7;
-			} elseif (preg_match("/^\"(.*)\"$/i", $line, $regs) && $type == 7 && $msgid) {
-				//$translations[$msgid][$plural] .= stripcslashes($regs[1]);
-			} elseif (preg_match("/msgstr\s+\"(.+)\"$/i", $line, $regs) && $type == 2 && !$msgid) {
-				$type = 5;
-			} elseif (preg_match("/msgstr\s+\"\"$/i", $line, $regs) && !$msgid) {
-				$type = 5;
-			} elseif (preg_match("/^\"(.*?):(.*)\"$/i", $line, $regs) && $type == 5) {
-				//$return[$regs[1]] = stripcslashes($regs[2]);
-			} else {
-				unset($translations[$msgid]);
-				$type = 0;
-				$msgid = "";
-				$plural = null;
+				$item[$section] .= stripcslashes($regs[1]);
+				continue;
 			}
 		} while (!feof($file));
-
 		fclose($file);
+
+		if (isset($item['key'])) {
+			static::_store($item);
+		}
 
 		foreach ($return as &$val) {
 			if (is_string($val)) {
 				$val = trim($val);
 			}
 		}
-		$return['translations'] = array_values($translations);
+		$return['translations'] = array_values(static::$_translations);
 		$return['count'] = count($return['translations']);
 
 		return $return;
@@ -310,5 +228,27 @@ class PoParser extends Parser {
  */
 	protected static function _pluralRule($locale) {
 		return Translation::pluralRule($locale);
+	}
+
+	protected static function _store($item) {
+		if (isset($item['plural'])) {
+			$id = $item['plural'];
+
+			foreach ($item['plural_value'] as $case => $value) {
+				static::$_translations[$id . '[' . $case . ']'] = [
+					'key' => $id,
+					'value' => $value,
+					'single_key' => $item['key'],
+					'plural_case' => (int)$case
+				] + $item;
+			}
+		}
+
+		$id = $item['key'];
+		if (!$id) {
+			return;
+		}
+		static::$_translations[$id] = $item;
+		debug (static::$_translations);
 	}
 }
