@@ -22,7 +22,6 @@ class PoParser extends Parser {
 		$defaults = compact('locale', 'cateogry', 'domain') + $defaults + Translation::config();
 
 		$file = fopen($file, 'r');
-		$isHeader = true;
 		$type = 0;
 		$return = array(
 			'count' => 0,
@@ -35,68 +34,84 @@ class PoParser extends Parser {
 		$defaultItem = $item = array(
 			'locale' => $defaults['locale'],
 			'domain' => $defaults['domain'],
-			'category' => $defaults['category']
+			'category' => $defaults['category'],
+			'key' => null,
+			'value' => null
 		);
 		$plural = 0;
-		$section = null;
+		$section = 'header';
+		static::$_translations = [];
 
 		do {
 			$line = trim(fgets($file));
 
 			if ($line === '') {
-				if ($section === 'value') {
-					static::_store($item);
-					$item = $defaultItem;
+				$section = null;
+
+				static::_store($item);
+				$item = $defaultItem;
+				continue;
+			}
+
+			if ($section === 'header') {
+		   		if (preg_match("/msg(id|str)\s+\"\"$/i", $line)) {
+					continue;
 				}
 
-				$section = null;
+				if ($line[0] == "#") {
+					if (strlen($line) > 1 && $line[1] === ',') {
+						//$return['flags'][trim(substr($line, 2))] = true;
+					} else {
+						//$return['comments'][] = (string)substr($line, 2);
+					}
+				} elseif (preg_match("/^\"(.*?):(.*)\"$/i", $line, $regs)) {
+					//$return['meta'][$regs[1]] = trim(stripcslashes($regs[2]));
+				}
+
 				continue;
 			}
 
 			if ($line[0] == "#") {
 				$section = 'comments';
-				if (!empty($line[1])) {
-					$isHeader = false;
-					if ($line[1] === '.') {
-						$item['extractedComments'][] = trim(substr($line, 2));
-					} elseif ($line[1] === ':') {
-						$item['references'][] = trim(substr($line, 2));
-					} elseif ($line[1] === ',') {
-						//$flags[trim(substr($line, 2))] = true;
-					} elseif ($line[1] === '|') {
-						$item['previous'][] = trim(substr($line, 2));
-					}
+
+				if ($line[1] === '.') {
+					$item['extractedComments'][] = trim(substr($line, 2));
+				} elseif ($line[1] === ':') {
+					$item['references'][] = trim(substr($line, 2));
+				} elseif ($line[1] === ',') {
+					$item['flags'][trim(substr($line, 2))] = true;
+				} elseif ($line[1] === '|') {
+					$item['previous'][] = trim(substr($line, 2));
 				} elseif (trim(substr($line, 1))) {
-					if ($isHeader) {
-						$return['comments'][] = substr($line, 2);
-					} else {
-						$item['comments'][] = substr($line, 2);
-					}
+					$item['comments'][] = substr($line, 2);
 				}
 				continue;
 			}
 
 		   	if (preg_match("/msgid\s+\"(.*)\"$/i", $line, $regs)) {
-				$isHeader = false;
 				$section = 'key';
+
 				$item['key'] = stripcslashes($regs[1]);
 				continue;
 			}
 
 			if (preg_match("/msgid_plural\s+\"(.*)\"$/i", $line, $regs)) {
 				$section = 'plural';
+
 				$item['plural'] = stripcslashes($regs[1]);
 				continue;
 			}
 
 			if (preg_match("/msgstr\s+\"(.*)\"$/i", $line, $regs)) {
 				$section = 'value';
+
 				$item['value'] = stripcslashes($regs[1]);
 				continue;
 			}
 
-			if (preg_match("/msgstr\[(\d+)\]\s+\"(.+)\"$/i", $line, $regs)) {
+			if (preg_match("/msgstr\[(\d+)\]\s+\"(.*)\"$/i", $line, $regs)) {
 				$section = 'piural_value';
+
 				$pluralCase = $regs[1];
 				$item['plural_value'][$pluralCase] = stripcslashes($regs[2]);
 				continue;
@@ -234,21 +249,35 @@ class PoParser extends Parser {
 		if (isset($item['plural'])) {
 			$id = $item['plural'];
 
+			$template = $item;
+			$template = array_intersect_key($template, array_flip(['locale', 'domain', 'category']));
+
 			foreach ($item['plural_value'] as $case => $value) {
-				static::$_translations[$id . '[' . $case . ']'] = [
+
+				if ($case === 0) {
+					static::$_translations[$item['key']] = $template + [
+						'key' => $item['key'],
+						'value' => $value ?: $item['key'],
+					];
+				}
+
+				static::$_translations[$id . '[' . $case . ']'] = $template + [
 					'key' => $id,
-					'value' => $value,
+					'value' => $value ?: $id,
 					'single_key' => $item['key'],
 					'plural_case' => (int)$case
-				] + $item;
+				];
 			}
+
+			return;
 		}
 
 		$id = $item['key'];
 		if (!$id) {
 			return;
 		}
+
+		$item['value'] = (isset($item['value']) && $item['value'] !== '') ? $item['value'] : $id;
 		static::$_translations[$id] = $item;
-		debug (static::$_translations);
 	}
 }
