@@ -12,9 +12,9 @@ class JsonParserTest extends CakeTestCase {
 			'count' => 1,
 			'translations' => array(
 				array(
-					'locale' => 'en',
 					'domain' => 'default',
 					'category' => 'LC_MESSAGES',
+					'locale' => 'en',
 					'key' => 'foo',
 					'value' => 'foo value'
 				)
