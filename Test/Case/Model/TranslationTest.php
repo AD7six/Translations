@@ -1068,7 +1068,7 @@ class TranslationTest extends CakeTestCase {
 		return array(
 			array('No % conversion'),
 			array('{name} 100%'),
-			array('%1$d 100%'),
+			array('%1$d 100%', '%1$d 100%%'),
 
 			array('%s 100%', '%s 100%%'),
 			array('%d 100%', '%d 100%%'),
