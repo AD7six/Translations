@@ -170,6 +170,13 @@ class ImportShell extends AppShell {
 			$return[] = $file;
 		}
 
+		// Filter out LC_TIME files
+		foreach($return as $i => $file) {
+			if (substr($file, -7) === 'LC_TIME') {
+				unset($return[$i]);
+			}
+		}
+
 		return $return;
 	}
 }
