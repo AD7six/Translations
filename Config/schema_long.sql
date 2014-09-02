@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `translations` (
   `category` char(11) DEFAULT 'LC_MESSAGES',
   `key` text,
   `value` text,
+  `single_key` text,
   `plural_case` tinyint(2) DEFAULT NULL COMMENT 'Only relevant for plural translations. 0-6',
   `comments` varchar(255) default NULL COMMENT 'description for the translation in the default locale, translator\'s own notes for other locales',
   `references` text COMMENT 'Where is this translation used',
