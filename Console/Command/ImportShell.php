@@ -105,7 +105,10 @@ class ImportShell extends AppShell {
 		}
 
 		foreach ($return['translations'] as $translation) {
-			if ($preventNewTranslations && !Translation::hasTranslation($translation['key'])) {
+			if (
+				$preventNewTranslations &&
+				!Translation::hasTranslation($translation['key'], $translation)
+			) {
 				$this->out(sprintf('<warning>Skipping undefined translation:</warning> "%s"', $translation['key']));
 				continue;
 			}
